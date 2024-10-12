@@ -10,4 +10,11 @@ COPY . .
 
 EXPOSE 4343
 
+# COPY start.sh ./
+# RUN chmod +x start.sh
+
+# CMD ["sh", "./start.sh"]
+
+# CMD ["sh", "-c", "npm run dev && npm run migrate"]
+
 CMD ["npm", "run", "dev"]
