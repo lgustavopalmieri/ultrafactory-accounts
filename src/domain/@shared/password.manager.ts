@@ -5,15 +5,23 @@ import { randomBytes, pbkdf2Sync } from 'crypto'
 
 export class PasswordManager {
   /**
-   * Validates if password has the requirements
-   * Generates a secure hash for the provided password.
+   * Validates and generates password
    * @param password The plain text password.
-   * @returns A string containing the hash + salt for storage.
+   * @returns A validated string containing the hashed password.
    */
   public static async validateAndHashPassword(
     password: string
   ): Promise<string> {
     await this.validateInputForNewPassword(password)
+    return this.hashPassword(password)
+  }
+
+  /**
+   * Generates a secure hash for the provided password.
+   * @param password The plain text password.
+   * @returns A string containing the hash + salt for storage.
+   */
+  public static async hashPassword(password: string): Promise<string> {
     const salt = randomBytes(16).toString('hex')
     const hash = pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex')
     return `${salt}:${hash}`
@@ -30,8 +38,14 @@ export class PasswordManager {
     storedHash: string
   ): Promise<boolean> {
     const [salt, originalHash] = storedHash.split(':')
+    if (!salt || !originalHash) {
+      throw new Error('Invalid hash format')
+    }
     const hash = pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex')
-    return hash === originalHash
+    if (hash !== originalHash) {
+      throw new Error('Invalid password')
+    }
+    return true
   }
 
   /**
@@ -40,7 +54,7 @@ export class PasswordManager {
    * @throws Error if the password does not meet the requirements.
    * @returns True if the password is valid, false otherwise.
    */
-  private static async validateInputForNewPassword(
+  public static async validateInputForNewPassword(
     password: string
   ): Promise<boolean> {
     const minLength = 8
