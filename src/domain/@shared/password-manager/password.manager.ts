@@ -2,6 +2,7 @@
 // ⚙️---⚙️---⚙️ Powered by Ultrafactory Software Solutions 2024 ⚙️---⚙️---⚙️
 // ____________________________________________________________________
 import { randomBytes, pbkdf2Sync } from 'crypto'
+import { PASSWORD_MESSAGES } from './messages'
 
 export class PasswordManager {
   /**
@@ -39,11 +40,11 @@ export class PasswordManager {
   ): Promise<boolean> {
     const [salt, originalHash] = storedHash.split(':')
     if (!salt || !originalHash) {
-      throw new Error('Invalid hash format')
+      throw new Error(PASSWORD_MESSAGES.invalid_hash)
     }
     const hash = pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex')
     if (hash !== originalHash) {
-      throw new Error('Invalid password')
+      throw new Error(PASSWORD_MESSAGES.invalid_password)
     }
     return true
   }
@@ -70,9 +71,7 @@ export class PasswordManager {
       !hasNumber ||
       !hasSpecialChar
     ) {
-      throw new Error(
-        'The password must have at least 8 characters, 1 number, 1 uppercase letter, and 1 special character.'
-      )
+      throw new Error(PASSWORD_MESSAGES.password_requirements)
     }
 
     return true

@@ -3,8 +3,8 @@
 // ____________________________________________________________________
 import { v4 as uuid } from 'uuid'
 import type { UserEntityCreateInput, UserEntityInterface } from './interfaces'
-import { CreateUserEntityValidator } from './user.validator'
-import { PasswordManager } from '../../@shared/password.manager'
+import { UserEntityValidator } from './user.validator'
+import { PasswordManager } from '../../@shared/password-manager/password.manager'
 
 export class User implements UserEntityInterface {
   readonly user_id: number | string
@@ -46,7 +46,7 @@ export class User implements UserEntityInterface {
       user_email: input.user_email,
       user_password: password
     })
-    await CreateUserEntityValidator.validate(newUser)
+    await UserEntityValidator.validate(newUser)
     return newUser
   }
 }

@@ -7,12 +7,12 @@ import {
   Length,
   IsNotEmpty,
   IsString,
-  IsDateString,
-  IsOptional
+  IsOptional,
+  IsDate
 } from 'class-validator'
-import type { UserEntityCreateInput } from './interfaces'
+import type { User } from './user.entity'
 
-export class CreateUserEntityValidator {
+export class UserEntityValidator {
   @IsOptional()
   user_id: number | string
 
@@ -37,27 +37,31 @@ export class CreateUserEntityValidator {
   user_password: string
 
   @IsNotEmpty()
-  @IsDateString()
+  @IsDate()
   created_at: Date
 
   @IsNotEmpty()
-  @IsDateString()
+  @IsDate()
   updated_at: Date
 
   @IsOptional()
-  @IsDateString()
+  @IsDate()
   deleted_at: null | Date
 
-  constructor(input: UserEntityCreateInput) {
+  constructor(input: User) {
     Object.assign(this, input)
   }
 
-  static async validate(input: UserEntityCreateInput): Promise<void> {
-    const dto = new CreateUserEntityValidator(input)
+  static async validate(input: User): Promise<void> {
+    const dto = new UserEntityValidator(input)
     const errors = await validate(dto)
 
     if (errors.length > 0) {
-      throw new Error(`Validation failed: ${JSON.stringify(errors)}`)
+      const errorMessages = errors
+        .map(error => Object.values(error.constraints).join(', '))
+        .join('\n')
+
+      throw new Error(errorMessages)
     }
   }
 }
