@@ -38,15 +38,15 @@ export class UserEntityValidator {
 
   @IsNotEmpty()
   @IsDate()
-  created_at: Date
+  user_created_at: Date
 
   @IsNotEmpty()
   @IsDate()
-  updated_at: Date
+  user_updated_at: Date
 
   @IsOptional()
   @IsDate()
-  deleted_at: null | Date
+  user_deleted_at: null | Date
 
   constructor(input: User) {
     Object.assign(this, input)

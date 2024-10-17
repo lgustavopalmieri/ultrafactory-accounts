@@ -4,17 +4,17 @@ import { UserRepository } from '../../../database/postgres/user/user.repository.
 
 export class UserController {
   static async register(req: Request, res: Response): Promise<void> {
-    const { name, last_name, email, password } = req.body
+    const { user_name, user_last_name, user_email, user_password } = req.body
 
     const userRepository = new UserRepository()
     const registerUser = new CreateUserUseCase(userRepository)
 
     try {
       await registerUser.execute({
-        name,
-        last_name,
-        email,
-        password
+        user_name,
+        user_last_name,
+        user_email,
+        user_password
       })
       res.status(201).send('User registered successfully')
     } catch (error: unknown) {

@@ -11,9 +11,9 @@ describe('UserEntityValidator', function () {
     user_last_name: 'Doe',
     user_email: 'john.doe@example.com',
     user_password: 'StrongPass123!',
-    created_at: new Date(),
-    updated_at: new Date(),
-    deleted_at: null as any
+    user_created_at: new Date(),
+    user_updated_at: new Date(),
+    user_deleted_at: null as any
   }
   test('should pass with valid input', async () => {
     await expect(UserEntityValidator.validate(validUser)).resolves.not.toThrow()
@@ -31,7 +31,10 @@ describe('UserEntityValidator', function () {
 
     for (const value of invalidDeletedAtValues) {
       await expect(
-        UserEntityValidator.validate({ ...validUser, deleted_at: value as any })
+        UserEntityValidator.validate({
+          ...validUser,
+          user_deleted_at: value as any
+        })
       ).rejects.toThrowError(/deleted_at must be a Date instance/)
     }
   })
@@ -41,7 +44,7 @@ describe('UserEntityValidator', function () {
 
     for (const value of validValues) {
       await expect(
-        UserEntityValidator.validate({ ...validUser, deleted_at: value })
+        UserEntityValidator.validate({ ...validUser, user_deleted_at: value })
       ).resolves.not.toThrow()
     }
   })
@@ -62,16 +65,16 @@ describe('UserEntityValidator', function () {
       await expect(
         UserEntityValidator.validate({
           ...validUser,
-          created_at: date as any,
-          updated_at: date as any
+          user_created_at: date as any,
+          user_updated_at: date as any
         })
       ).rejects.toThrowError(/created_at must be a Date instance/)
 
       await expect(
         UserEntityValidator.validate({
           ...validUser,
-          created_at: date as any,
-          updated_at: date as any
+          user_created_at: date as any,
+          user_updated_at: date as any
         })
       ).rejects.toThrowError(/updated_at must be a Date instance/)
     }
@@ -84,8 +87,8 @@ describe('UserEntityValidator', function () {
       await expect(
         UserEntityValidator.validate({
           ...validUser,
-          created_at: date,
-          updated_at: date
+          user_created_at: date,
+          user_updated_at: date
         })
       ).resolves.not.toThrow()
     }
