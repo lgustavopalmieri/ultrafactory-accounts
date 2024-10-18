@@ -2,7 +2,11 @@
 // ⚙️---⚙️---⚙️ Powered by Ultrafactory Software Solutions 2024 ⚙️---⚙️---⚙️
 // ____________________________________________________________________
 import { v4 as uuid } from 'uuid'
-import type { UserEntityCreateInput, UserEntityInterface } from './interfaces'
+import type {
+  UserEntityCreateInput,
+  UserEntityInterface,
+  UserEntityUpdateInput
+} from './interfaces'
 import { UserEntityValidator } from './user.validator'
 import { Email } from '../../@shared/value-objects/email/email'
 import { Password } from '../../@shared/value-objects/password/password'
@@ -50,10 +54,10 @@ export class User implements UserEntityInterface {
     return newUser
   }
 
-  public static async update(
-    user: User,
-    input: Partial<UserEntityInterface>
-  ): Promise<User> {
+  public static async update({
+    user,
+    input
+  }: UserEntityUpdateInput): Promise<User> {
     const updatedEmail = input.user_email
       ? new Email(input.user_email).getValue()
       : user.user_email

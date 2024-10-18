@@ -1,5 +1,8 @@
 // ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨
 // ⚙️---⚙️---⚙️ Powered by Ultrafactory Software Solutions 2024 ⚙️---⚙️---⚙️
+
+import type { User } from './user.entity'
+
 // ____________________________________________________________________
 export interface UserEntityInterface {
   user_id?: number | string
@@ -17,4 +20,9 @@ export interface UserEntityCreateInput {
   user_last_name: string
   user_email: string
   user_password: string
+}
+
+export interface UserEntityUpdateInput {
+  user: User
+  input: Partial<UserEntityInterface>
 }
