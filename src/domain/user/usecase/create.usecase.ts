@@ -22,7 +22,7 @@ export class CreateUserUseCase {
       throw new Error('User already exists')
     }
     await this.userRepository.create(
-      new User({
+      await User.create({
         user_name,
         user_last_name,
         user_email,

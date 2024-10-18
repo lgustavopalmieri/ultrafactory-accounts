@@ -110,7 +110,7 @@ describe('UserEntityValidator', function () {
     await expect(
       UserEntityValidator.validate({ ...validUser, user_password: 232 as any })
     ).rejects.toThrowError(
-      'user_password must be a string, user_password must be longer than or equal to 8 and shorter than or equal to 100 characters'
+      'user_password must be a string, user_password must be longer than or equal to 8 and shorter than or equal to 1000 characters'
     )
   })
 

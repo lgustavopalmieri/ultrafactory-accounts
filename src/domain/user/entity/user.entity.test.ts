@@ -5,11 +5,11 @@ import { User } from './user.entity'
 
 describe('User Entity', function () {
   test('should have all properties', async function () {
-    const newUser = new User({
+    const newUser = await User.create({
       user_name: 'input.user_name',
       user_last_name: 'input.user_last_name',
       user_email: 'input.user_email@mail.com',
-      user_password: 'password'
+      user_password: 'StrongPass123!'
     })
 
     expect(newUser).toHaveProperty('user_id')

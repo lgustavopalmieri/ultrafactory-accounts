@@ -8,13 +8,7 @@ export class UserRepository implements UserRepositoryInterface {
     const user = await db.oneOrNone(query, [email])
 
     if (user) {
-      return new User({
-        user_id: user.id,
-        user_name: user.name,
-        user_last_name: user.last_name,
-        user_email: user.email,
-        user_password: user.password
-      })
+      return User.load(user)
     }
 
     return null
@@ -23,7 +17,7 @@ export class UserRepository implements UserRepositoryInterface {
   async create(user: User): Promise<void> {
     const query =
       'INSERT INTO users (user_name, user_last_name, user_email, user_password) VALUES ($1, $2, $3, $4)'
-    const newUser = new User({
+    const newUser = await User.create({
       user_name: user.user_name,
       user_last_name: user.user_last_name,
       user_email: user.user_email,

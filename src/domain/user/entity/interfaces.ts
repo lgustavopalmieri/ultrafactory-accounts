@@ -7,9 +7,9 @@ export interface UserEntityInterface {
   user_last_name: string
   user_email: string
   user_password: string
-  created_at?: Date
-  updated_at?: Date
-  deleted_at?: null | Date
+  user_created_at: Date
+  user_updated_at: Date
+  user_deleted_at: null | Date
 }
 
 export interface UserEntityCreateInput {

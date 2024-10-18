@@ -32,7 +32,7 @@ export class UserEntityValidator {
   user_email: string
 
   @IsNotEmpty()
-  @Length(8, 100)
+  @Length(8, 1000)
   @IsString()
   user_password: string
 
