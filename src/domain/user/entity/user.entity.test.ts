@@ -8,7 +8,7 @@ describe('User Entity', function () {
     const newUser = new User({
       user_name: 'input.user_name',
       user_last_name: 'input.user_last_name',
-      user_email: 'input.user_email',
+      user_email: 'input.user_email@mail.com',
       user_password: 'password'
     })
 

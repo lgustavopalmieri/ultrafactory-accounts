@@ -1,24 +1,36 @@
 // ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨
 // ⚙️---⚙️---⚙️ Powered by Ultrafactory Software Solutions 2024 ⚙️---⚙️---⚙️
 // ____________________________________________________________________
-
-import type { EmailInterface } from './email.interface'
-import { EmailValidator } from './email.validator'
-
 export class Email {
-  readonly email: string
+  private readonly value: string
 
-  constructor({ email }: EmailInterface) {
-    this.email = email
+  constructor(email: string) {
+    this.isValid(email)
+    this.value = email
   }
 
-  public static async create(input: EmailInterface): Promise<Email> {
-    const newEmail = new Email(input)
-    await EmailValidator.validate(newEmail)
-    return newEmail
+  /**
+   * Validates if the given email follows a proper format.
+   *
+   * The email must contain:
+   * - A text before and after the `@` symbol
+   * - A dot (`.`) followed by at least two letters (e.g., `.com`, `.org`)
+   *
+   * @param {string} email - The email to validate.
+   * @throws {Error} If the email is invalid, throws an "Invalid email" error.
+   *
+   * @example
+   * isValid("user@example.com"); // No error
+   * isValid("invalid-email.com"); // Throws Error: "Invalid email"
+   */
+  private isValid(email: string): void {
+    const emailRegex = /^[^@]+@[^@]+\.[a-z]{2,}$/i
+    if (!emailRegex.test(email)) {
+      throw new Error('Invalid email')
+    }
   }
 
-  public getEmail(): string {
-    return this.email
+  public getValue(): string {
+    return this.value
   }
 }

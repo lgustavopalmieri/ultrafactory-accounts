@@ -4,8 +4,8 @@
 import { v4 as uuid } from 'uuid'
 import type { UserEntityCreateInput, UserEntityInterface } from './interfaces'
 import { UserEntityValidator } from './user.validator'
-import { PasswordManager } from '../../@shared/password-manager/password.manager'
 import { Email } from '../../@shared/value-objects/email/email'
+import { Password } from '../../@shared/value-objects/password/password'
 
 export class User implements UserEntityInterface {
   readonly user_id: number | string
@@ -30,7 +30,7 @@ export class User implements UserEntityInterface {
     this.user_id = user_id ?? uuid()
     this.user_name = user_name
     this.user_last_name = user_last_name
-    this.user_email = user_email
+    this.user_email = new Email(user_email).getValue()
     this.user_password = user_password
     this.user_created_at = created_at ?? new Date()
     this.user_updated_at = updated_at ?? new Date()
@@ -38,11 +38,9 @@ export class User implements UserEntityInterface {
   }
 
   public static async create(input: UserEntityCreateInput): Promise<User> {
-    const password = await PasswordManager.validateAndHashPassword(
-      input.user_password
-    )
+    const password = new Password(input.user_password).getValue()
 
-    const email = (await Email.create({ email: input.user_email })).getEmail()
+    const email = new Email(input.user_email).getValue()
 
     const newUser = new User({
       user_name: input.user_name,

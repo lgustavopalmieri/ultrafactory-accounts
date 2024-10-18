@@ -2,7 +2,6 @@
 // ⚙️---⚙️---⚙️ Powered by Ultrafactory Software Solutions 2024 ⚙️---⚙️---⚙️
 // ____________________________________________________________________
 import {
-  validate,
   IsEmail,
   Length,
   IsNotEmpty,
@@ -11,6 +10,7 @@ import {
   IsDate
 } from 'class-validator'
 import type { User } from './user.entity'
+import { ValidatorErrors } from '../../@shared/validators/validator-errors.validator'
 
 export class UserEntityValidator {
   @IsOptional()
@@ -54,14 +54,6 @@ export class UserEntityValidator {
 
   static async validate(input: User): Promise<void> {
     const dto = new UserEntityValidator(input)
-    const errors = await validate(dto)
-
-    if (errors.length > 0) {
-      const errorMessages = errors
-        .map(error => Object.values(error.constraints).join(', '))
-        .join('\n')
-
-      throw new Error(errorMessages)
-    }
+    await ValidatorErrors.validate(dto)
   }
 }
