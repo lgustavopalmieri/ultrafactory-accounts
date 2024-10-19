@@ -1,11 +1,19 @@
+// ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨
+// ⚙️---⚙️---⚙️ Powered by Ultrafactory Software Solutions 2024 ⚙️---⚙️---⚙️
+// ____________________________________________________________________
+import type pgPromise from 'pg-promise'
 import { User } from '../../../../domain/user/entity/user.entity'
 import type { UserRepositoryInterface } from '../../../../domain/user/repository/user.repository.interface'
-import db from '../postgres.client'
+import type pg from 'pg-promise/typescript/pg-subset'
 
 export class UserRepository implements UserRepositoryInterface {
+  private readonly db: pgPromise.IDatabase<object, pg.IClient>
+  constructor(dbConnection: pgPromise.IDatabase<object, pg.IClient>) {
+    this.db = dbConnection
+  }
   async findByEmail(email: string): Promise<User | null> {
     const query = 'SELECT * FROM users WHERE email = $1'
-    const user = await db.oneOrNone(query, [email])
+    const user = await this.db.oneOrNone(query, [email])
 
     if (user) {
       return User.load(user)
@@ -24,7 +32,7 @@ export class UserRepository implements UserRepositoryInterface {
       user_password: user.user_password
     })
 
-    await db.none(query, [
+    await this.db.none(query, [
       newUser.user_name,
       newUser.user_last_name,
       newUser.user_email,
