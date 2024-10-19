@@ -32,11 +32,9 @@ export class User implements UserEntityInterface {
     this.user_deleted_at = input.user_deleted_at
   }
 
-  public static load(input: UserEntityInterface): User {
-    const newUser = new User(input)
-    UserEntityValidator.validate(newUser)
-    return newUser
-  }
+  //---------------------------------------------------------\\
+  // should be created an specific method for password change \\
+  //-----------------------------------------------------------\\
 
   public static async create(input: UserEntityCreateInput): Promise<User> {
     const password = new Password(input.user_password).getValue()
@@ -51,6 +49,12 @@ export class User implements UserEntityInterface {
       user_deleted_at: null
     })
     await UserEntityValidator.validate(newUser)
+    return newUser
+  }
+
+  public static load(input: UserEntityInterface): User {
+    const newUser = new User(input)
+    UserEntityValidator.validate(newUser)
     return newUser
   }
 

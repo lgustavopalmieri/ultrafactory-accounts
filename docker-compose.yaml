@@ -9,8 +9,6 @@ services:
       - '4343:4343'
     volumes:
       - .:/usr/src/app
-    # depends_on:
-    #   - ultrafactory-accounts-pg
     networks:
       - ultrafactory-network
     environment:
@@ -19,25 +17,6 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_BIND_PORT: ${POSTGRES_BIND_PORT}
-
-  # ultrafactory-accounts-pg:
-  #   image: 'postgres:14.5'
-  #   restart: always
-  #   environment:
-  #     PGHOST: ${PGHOST}
-  #     POSTGRES_USER: ${PGUSER}
-  #     POSTGRES_PASSWORD: ${PGPASSWORD}
-  #     POSTGRES_DB: ${PGDATABASE}
-  #   logging:
-  #     options:
-  #       max-size: 10m
-  #       max-file: '3'
-  #   networks:
-  #     - ultrafactory-network
-  #   ports:
-  #     - '${PGPORT}:5432'
-  #   volumes:
-  #     - ./postgres-data:/var/lib/postgresql/data
 
 networks:
   ultrafactory-network:

@@ -1,7 +1,0 @@
-docker exec -it ultrafactory-accounts-postgres-1 psql -U seu_usuario -d accounts
-
-\dt
-
-SELECT * FROM users;
-
-\q
