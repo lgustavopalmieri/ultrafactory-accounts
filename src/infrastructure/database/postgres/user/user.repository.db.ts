@@ -1,5 +1,5 @@
 import { User } from '../../../../domain/user/entity/user.entity'
-import type { UserRepositoryInterface } from '../../../../domain/user/repository/user.repository'
+import type { UserRepositoryInterface } from '../../../../domain/user/repository/user.repository.interface'
 import db from '../postgres.client'
 
 export class UserRepository implements UserRepositoryInterface {
@@ -14,7 +14,7 @@ export class UserRepository implements UserRepositoryInterface {
     return null
   }
 
-  async create(user: User): Promise<void> {
+  async create(user: User): Promise<User> {
     const query =
       'INSERT INTO users (user_name, user_last_name, user_email, user_password) VALUES ($1, $2, $3, $4)'
     const newUser = await User.create({
@@ -30,5 +30,7 @@ export class UserRepository implements UserRepositoryInterface {
       newUser.user_email,
       newUser.user_password
     ])
+
+    return newUser
   }
 }

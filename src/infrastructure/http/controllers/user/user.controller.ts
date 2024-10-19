@@ -1,5 +1,8 @@
+// ¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨¨
+// ⚙️---⚙️---⚙️ Powered by Ultrafactory Software Solutions 2024 ⚙️---⚙️---⚙️
+// ____________________________________________________________________
 import type { Request, Response } from 'express'
-import { CreateUserUseCase } from '../../../../domain/user/usecase/create.usecase'
+import { CreateUserUseCase } from '../../../../domain/user/usecase/create-user.usecase'
 import { UserRepository } from '../../../database/postgres/user/user.repository.db'
 
 export class UserController {
@@ -16,9 +19,9 @@ export class UserController {
         user_email,
         user_password
       })
-      res.status(201).send('User registered successfully')
+      res.status(201).json({ message: 'User registered successfully' })
     } catch (error: unknown) {
-      res.status(400).send(error)
+      res.status(400).json({ message: (error as Error).message })
     }
   }
 }
