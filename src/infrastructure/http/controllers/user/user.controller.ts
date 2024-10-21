@@ -5,6 +5,10 @@ import type { Request, Response } from 'express'
 import { CreateUserUseCase } from '../../../../domain/user/usecase/create-user.usecase'
 import { UserRepository } from '../../../database/postgres/user/user.repository.db'
 import { productionDatabase } from '../../../database/postgres/postgres.client'
+import {
+  errorResponse,
+  successResponse
+} from '../helpers/apis-response.helpers'
 
 export class UserController {
   static async register(req: Request, res: Response): Promise<void> {
@@ -14,15 +18,17 @@ export class UserController {
     const registerUser = new CreateUserUseCase(userRepository)
 
     try {
-      await registerUser.execute({
+      const newUser = await registerUser.execute({
         user_name,
         user_last_name,
         user_email,
         user_password
       })
-      res.status(201).json({ message: 'User registered successfully' })
+      // PASSWORD SHOULD NOT RETURN WHEN USER IS CREATED \\
+      successResponse(res, newUser, 'User registered successfully')
     } catch (error: unknown) {
-      res.status(400).json({ message: (error as Error).message })
+      const errMessage = (error as Error).message || 'Unexpected error'
+      errorResponse(res, errMessage, 400)
     }
   }
 }

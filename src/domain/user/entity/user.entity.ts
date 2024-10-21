@@ -34,6 +34,7 @@ export class User implements UserEntityInterface {
 
   //---------------------------------------------------------\\
   // should be created an specific method for password change \\
+  // PASSWORD SHOULD NOT RETURN WHEN USER IS CREATED \\
   //-----------------------------------------------------------\\
 
   public static async create(input: UserEntityCreateInput): Promise<User> {

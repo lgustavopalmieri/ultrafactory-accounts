@@ -12,7 +12,7 @@ export class UserRepository implements UserRepositoryInterface {
     this.db = dbConnection
   }
   async findByEmail(email: string): Promise<User | null> {
-    const query = 'SELECT * FROM users WHERE email = $1'
+    const query = 'SELECT * FROM users WHERE user_email = $1'
     const user = await this.db.oneOrNone(query, [email])
 
     if (user) {
@@ -25,20 +25,14 @@ export class UserRepository implements UserRepositoryInterface {
   async create(user: User): Promise<User> {
     const query =
       'INSERT INTO users (user_name, user_last_name, user_email, user_password) VALUES ($1, $2, $3, $4)'
-    const newUser = await User.create({
-      user_name: user.user_name,
-      user_last_name: user.user_last_name,
-      user_email: user.user_email,
-      user_password: user.user_password
-    })
 
     await this.db.none(query, [
-      newUser.user_name,
-      newUser.user_last_name,
-      newUser.user_email,
-      newUser.user_password
+      user.user_name,
+      user.user_last_name,
+      user.user_email,
+      user.user_password
     ])
 
-    return newUser
+    return user
   }
 }

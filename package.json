@@ -7,7 +7,7 @@
     "tsc": "tsc",
     "dev": "nodemon src/infrastructure/http/server.ts",
     "migrate": "db-migrate up --config ./src/infrastructure/database/postgres/database.js --migrations-dir ./src/infrastructure/database/postgres/migrations",
-    "migrate:down": "db-migrate down",
+    "migrate:down": "db-migrate down --config ./src/infrastructure/database/postgres/database.js --migrations-dir ./src/infrastructure/database/postgres/migrations",
     "starthttp": "nodemon src/infrastructure/http/server.ts",
     "format": "prettier --write .",
     "prepare": "husky",
